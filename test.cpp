@@ -12,7 +12,12 @@
         List all PIDs.
 */
 int main(int argc, char** argv) {
-        std::cout << "PID:\n";
-        procplusplus::GetPID();
-    	return 0;
+        if(argc < 2)
+                std::cout << "Use: " << argv[0] << " <PID>\n";
+        else {
+                //std::cout << "PID:\n";
+                std::cout << procplusplus::GetProcessName(atoi(argv[1]));
+                //procplusplus::GetPID();
+        }
+        return 0;
 }
