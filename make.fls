@@ -1,0 +1,6 @@
+#!/bin/fla --b
+
+() -> main {
+        executepp("Build", "c++ -I. test.cpp -o test")
+        executepp("Run", "./test")
+} main;
