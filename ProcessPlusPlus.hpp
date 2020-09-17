@@ -14,6 +14,8 @@
 #include <bits/stdc++.h> 
 #include <list>
 #include <cstring>
+#include <cstdlib>
+
 namespace procplusplus {
     	static std::string FindStringWithReturn(std::string file, std::string str) {
 		std::string line;
@@ -57,6 +59,46 @@ namespace procplusplus {
                 return "null";
         }
 
+        /* By Name */
+        int GetPIDByName(std::string name) {
+                const char* directory = "/proc";
+                size_t      taskNameSize = 1024;
+                char*       taskName = (char*)calloc(1, taskNameSize);
+
+                DIR* dir = opendir(directory);
+
+                if (dir) {
+                        struct dirent* de = 0;
+
+                        while ((de = readdir(dir)) != 0) {
+                                if (strcmp(de->d_name, ".") == 0 || 
+                                        strcmp(de->d_name, "..") == 0)
+                                continue;
+
+                                int pid = -1;
+                                int res = sscanf(de->d_name, "%d", &pid);
+
+                                if (res == 1) {
+                                /* Valid PID Value */
+
+                                char cmdline_file[1024] = {0};
+                                sprintf(cmdline_file, "%s/%d/cmdline", directory, pid);
+
+                                FILE* cmdline = fopen(cmdline_file, "r");
+
+                                if (getline(&taskName, &taskNameSize, cmdline) > 0)
+                                        if (strstr(taskName, name.c_str()) != 0)
+                                                return pid;
+
+                                        fclose(cmdline);
+                                }
+                        }
+
+                        closedir(dir);
+                }
+
+                return -1;
+        }
 
         /*std::list<int>&*/void GetPID() {
                 struct dirent *entryname;

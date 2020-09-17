@@ -6,18 +6,34 @@
 # */
 
 #include <iostream>
-#include <ProcessPlusPlus.hpp>
+#include <ProcessPlusPlus.hpp> /* Process library */
+
+/* Help */
+#define HELP(object) std::cout << "Usage: " << object << " [--pid | --name]\n --pid : <NAME> to <PID>\n--name : <PID> to <NAME>\n";
 
 /*
-        List all PIDs.
+        --name : Get Name by PID
+        --pid : Get PID by Name
+
+        Required 2 argument.
 */
 int main(int argc, char** argv) {
-        if(argc < 2)
-                std::cout << "Use: " << argv[0] << " <PID>\n";
-        else {
-                //std::cout << "PID:\n";
-                std::cout << procplusplus::GetProcessName(atoi(argv[1]));
-                //procplusplus::GetPID();
+        if(argc < 3) {
+                HELP(argv[0])
+                return 0;
         }
+        std::string text(argv[1]);
+        if(text == "--pid") {
+                std::string test(argv[2]);
+                std::cout << "PID:" << procplusplus::GetPIDByName(test) << "\nName: " <<
+                argv[2] << "\n";
+        } else if(text == "--name") {
+                std::string pid_string(argv[2]);
+                int pid = atoi(pid_string.c_str());
+                std::cout << "Name: " << procplusplus::GetProcessName(pid) + "PID: " + 
+                pid_string + "\n";
+        } else
+                HELP(argv[0]) 
+
         return 0;
 }
