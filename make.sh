@@ -1,4 +1,3 @@
 #!/bin/sh
-# Shebang line
 
-c++ -I. test.cpp -o test && ./test
+c++ -I. ProcessPlusPlus.cpp -o procp && ./procp
